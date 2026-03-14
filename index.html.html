@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Alpha — Suplementos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #1D9E75;
+  --green-light: #E1F5EE;
+  --green-dark: #085041;
+  --green-mid: #0F6E56;
+  --amber: #BA7517;
+  --amber-light: #FAEEDA;
+  --red: #A32D2D;
+  --red-light: #FCEBEB;
+  --bg: #0a0f0d;
+  --bg2: #111814;
+  --bg3: #162018;
+  --surface: #1a2420;
+  --surface2: #1f2c27;
+  --border: rgba(29,158,117,0.18);
+  --border2: rgba(29,158,117,0.32);
+  --text: #e8f5f0;
+  --text2: #8fb5a8;
+  --text3: #4d7a6e;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+}
+
+html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+body { min-height: 100vh; }
+
+/* ── UTILITY ── */
+.hidden { display: none !important; }
+.fade-in { animation: fadeIn 0.35s ease forwards; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── SCREEN ROUTER ── */
+#screen-config, #screen-login, #screen-admin, #screen-cliente { display: none; }
+#screen-config.active, #screen-login.active, #screen-admin.active, #screen-cliente.active { display: block; }
+
+/* ══════════════════════════════════════
+   CONFIG SCREEN
+══════════════════════════════════════ */
+.config-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: radial-gradient(ellipse at 30% 40%, rgba(29,158,117,0.12) 0%, transparent 60%);
+}
+.config-box {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-xl);
+  padding: 2.5rem 2rem;
+}
+.config-box h1 { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.config-box p { font-size: 14px; color: var(--text2); margin-bottom: 1.5rem; line-height: 1.7; }
+.config-box label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.04em; }
+.config-box input {
+  width: 100%; padding: 10px 14px; border-radius: var(--r-sm);
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--font-body); font-size: 14px; margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.config-box input:focus { outline: none; border-color: var(--green); }
+.config-box .hint { font-size: 12px; color: var(--text3); margin-top: -10px; margin-bottom: 16px; }
+.btn-config {
+  width: 100%; padding: 12px; border-radius: var(--r-md);
+  background: var(--green); border: none; color: #fff;
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.btn-config:hover { background: var(--green-mid); }
+.config-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+.config-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--bg3); border-radius: var(--r-md); padding: 10px 14px;
+  border: 1px solid var(--border); font-size: 13px; color: var(--text2);
+}
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--green-dark); color: #9FE1CB;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 1px;
+}
+
+/* ══════════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════════ */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(29,158,117,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(29,158,117,0.07) 0%, transparent 50%);
+}
+.login-logo {
+  width: 60px; height: 60px; border-radius: var(--r-lg);
+  background: var(--green); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 20px; color: #fff;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 40px rgba(29,158,117,0.3);
+}
+.login-title { font-family: var(--font-display); font-size: 26px; font-weight: 700; margin-bottom: 4px; text-align: center; }
+.login-sub { font-size: 14px; color: var(--text2); margin-bottom: 2rem; text-align: center; }
+.login-tabs {
+  display: flex; gap: 0; margin-bottom: 1.5rem;
+  background: var(--surface); border-radius: var(--r-md); padding: 3px;
+  border: 1px solid var(--border);
+}
+.login-tab {
+  flex: 1; padding: 8px 16px; border: none; background: none;
+  color: var(--text2); font-family: var(--font-body); font-size: 14px;
+  border-radius: 9px; cursor: pointer; transition: all 0.2s;
+}
+.login-tab.active { background: var(--green); color: #fff; font-weight: 500; }
+.login-box {
+  width: 100%; max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+}
+.login-box label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.04em; }
+.login-box input {
+  width: 100%; padding: 11px 14px; border-radius: var(--r-sm);
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--font-body); font-size: 15px; margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.login-box input:focus { outline: none; border-color: var(--green); }
+.btn-login {
+  width: 100%; padding: 12px; border-radius: var(--r-md);
+  background: var(--green); border: none; color: #fff;
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s; margin-top: 4px;
+}
+.btn-login:hover { background: var(--green-mid); }
+.login-err {
+  background: var(--red-light); color: #791F1F;
+  font-size: 13px; padding: 10px 14px; border-radius: var(--r-sm);
+  margin-bottom: 12px; display: none;
+}
+.login-loading {
+  text-align: center; padding: 1.5rem;
+  font-size: 14px; color: var(--text2); display: none;
+}
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 2px solid var(--border2); border-top-color: var(--green);
+  border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.config-link {
+  margin-top: 1.5rem; font-size: 13px; color: var(--text3);
+  text-align: center; cursor: pointer; text-decoration: underline;
+}
+.config-link:hover { color: var(--text2); }
+
+/* ══════════════════════════════════════
+   ADMIN — layout comum
+══════════════════════════════════════ */
+.admin-layout { display: flex; flex-direction: column; min-height: 100vh; max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+.topbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 1.25rem 0; border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+.topbar-logo {
+  width: 36px; height: 36px; border-radius: var(--r-sm);
+  background: var(--green); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #fff; flex-shrink: 0;
+}
+.topbar-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+.topbar-sub { font-size: 12px; color: var(--text2); }
+.topbar-spacer { flex: 1; }
+.btn-logout {
+  padding: 7px 14px; border-radius: var(--r-sm);
+  background: none; border: 1px solid var(--border2);
+  color: var(--text2); font-size: 13px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-logout:hover { border-color: var(--red); color: #F09595; }
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 2px; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 8px 18px; border: none; background: none;
+  color: var(--text3); font-family: var(--font-body); font-size: 14px;
+  border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); font-weight: 500; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1.25rem; margin-bottom: 1rem;
+}
+.card-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+.stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r-md); padding: 1rem; }
+.stat-label { font-size: 11px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.stat-val { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.stat-val.g { color: var(--green); }
+.stat-val.a { color: var(--amber); }
+.stat-val.r { color: var(--red); }
+
+/* ── FORMS ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label { font-size: 12px; color: var(--text2); letter-spacing: 0.04em; }
+.form-group input, .form-group select {
+  padding: 10px 12px; border-radius: var(--r-sm);
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--font-body); font-size: 14px; width: 100%;
+  transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--green); }
+.form-group select option { background: var(--bg3); }
+.btn-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+.btn-primary {
+  padding: 9px 22px; border-radius: var(--r-sm);
+  background: var(--green); border: none; color: #fff;
+  font-family: var(--font-display); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--green-mid); }
+.btn-ghost {
+  padding: 9px 18px; border-radius: var(--r-sm);
+  background: none; border: 1px solid var(--border2); color: var(--text2);
+  font-size: 14px; cursor: pointer; transition: all 0.2s;
+}
+.btn-ghost:hover { background: var(--surface2); }
+.success-toast {
+  background: var(--green-dark); color: #9FE1CB;
+  padding: 10px 16px; border-radius: var(--r-sm); font-size: 13px;
+  margin-bottom: 1rem; border: 1px solid rgba(29,158,117,0.3); display: none;
+}
+
+/* ── CLIENT LIST ── */
+.client-list { display: flex; flex-direction: column; gap: 8px; }
+.client-row {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1rem 1.25rem;
+  display: flex; align-items: center; gap: 12px;
+  transition: border-color 0.2s;
+}
+.client-row:hover { border-color: var(--border2); }
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--green-dark); color: #9FE1CB;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; flex-shrink: 0;
+}
+.avatar.sm { width: 32px; height: 32px; font-size: 11px; }
+.client-info { flex: 1; min-width: 0; }
+.client-name { font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.client-sub { font-size: 12px; color: var(--text2); }
+.badge {
+  display: inline-block; padding: 3px 10px;
+  border-radius: 99px; font-size: 11px; font-weight: 500;
+}
+.badge-green { background: var(--green-dark); color: #9FE1CB; }
+.badge-amber { background: rgba(186,117,23,0.15); color: #EF9F27; }
+.badge-red { background: rgba(163,45,45,0.15); color: #F09595; }
+.badge-gray { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: none; cursor: pointer;
+  color: var(--text2); display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; transition: all 0.2s;
+}
+.icon-btn:hover { background: var(--green-dark); color: #9FE1CB; border-color: var(--green); }
+
+/* ── RANKING ── */
+.ranking-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.ranking-item:last-child { border-bottom: none; }
+.rank-num { font-family: var(--font-display); font-size: 20px; font-weight: 700; width: 30px; text-align: center; color: var(--text3); }
+.rank-num.gold { color: #EF9F27; }
+.rank-num.silver { color: #B4B2A9; }
+.rank-num.bronze { color: #D85A30; }
+.rank-info { flex: 1; }
+.rank-name { font-size: 14px; font-weight: 500; }
+.rank-prod { font-size: 12px; color: var(--text2); }
+.progress-bar { height: 3px; background: var(--surface2); border-radius: 99px; margin-top: 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--green); transition: width 0.6s ease; }
+.rank-pts { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--green); text-align: right; }
+.rank-cash { font-size: 12px; color: var(--text2); text-align: right; }
+
+/* ── ALERTS ── */
+.alert-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: var(--r-md); margin-bottom: 8px;
+}
+.alert-item.warn { background: rgba(186,117,23,0.08); border: 1px solid rgba(186,117,23,0.25); }
+.alert-item.danger { background: rgba(163,45,45,0.08); border: 1px solid rgba(163,45,45,0.25); }
+.alert-text { flex: 1; }
+.alert-name { font-size: 14px; font-weight: 500; }
+.alert-desc { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.btn-whats {
+  padding: 6px 14px; border-radius: var(--r-sm);
+  background: var(--green); border: none; color: #fff;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: background 0.2s;
+}
+.btn-whats:hover { background: var(--green-mid); }
+
+/* ── CASHBACK ── */
+.cb-row { margin-bottom: 14px; }
+.cb-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.cb-name { font-size: 14px; font-weight: 500; }
+.cb-val { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--green); }
+.cb-sub { font-size: 12px; color: var(--text2); }
+
+/* ── INDICAÇÃO ── */
+.indic-pair {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.indic-pair:last-child { border-bottom: none; }
+.arrow { font-size: 12px; color: var(--text3); }
+
+/* ── SEARCH ── */
+.search-wrap { margin-bottom: 1rem; }
+.search-wrap input {
+  width: 100%; padding: 10px 14px; border-radius: var(--r-md);
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--font-body); font-size: 14px;
+}
+.search-wrap input:focus { outline: none; border-color: var(--green); }
+
+/* ── EMPTY ── */
+.empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 14px; }
+
+/* ══════════════════════════════════════
+   ÁREA DO CLIENTE
+══════════════════════════════════════ */
+.cliente-layout {
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(29,158,117,0.15) 0%, transparent 55%);
+}
+.cliente-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 1.25rem 0; margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.cliente-avatar {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--green); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  box-shadow: 0 0 20px rgba(29,158,117,0.4); flex-shrink: 0;
+}
+.cliente-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+.cliente-code { font-size: 12px; color: var(--text2); }
+
+/* pontos hero */
+.pts-hero {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative; overflow: hidden;
+}
+.pts-hero::before {
+  content: '';
+  position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(29,158,117,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.pts-label { font-size: 12px; color: var(--text2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.pts-number { font-family: var(--font-display); font-size: 56px; font-weight: 700; color: var(--green); line-height: 1; }
+.pts-sub { font-size: 13px; color: var(--text2); margin-top: 8px; }
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+.info-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1rem;
+}
+.info-card .label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.info-card .value { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+.info-card .value.green { color: var(--green); }
+.info-card .value.amber { color: var(--amber); }
+.info-card .value.red { color: var(--red); }
+.info-card .detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+.produto-card {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: var(--r-lg); padding: 1.25rem; margin-bottom: 1rem;
+}
+.produto-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.produto-name { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+.produto-data { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.days-bar { height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
+.days-fill { height: 100%; border-radius: 99px; transition: width 0.8s ease; }
+.days-fill.ok { background: var(--green); }
+.days-fill.warn { background: #EF9F27; }
+.days-fill.crit { background: #E24B4A; }
+.days-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); }
+
+.ranking-badge-wrap { text-align: center; margin-bottom: 1rem; }
+.ranking-medal {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 99px; padding: 10px 20px;
+}
+.medal-icon { font-size: 20px; }
+.medal-text { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+
+.indic-codigo {
+  background: var(--surface); border: 1px dashed var(--green);
+  border-radius: var(--r-lg); padding: 1.25rem; margin-bottom: 1rem;
+  text-align: center;
+}
+.indic-codigo .label { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.indic-codigo .code {
+  font-family: var(--font-display); font-size: 28px; font-weight: 700;
+  color: var(--green); letter-spacing: 0.12em;
+}
+.indic-codigo .hint { font-size: 12px; color: var(--text3); margin-top: 8px; }
+.indic-list-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+}
+.indic-list-item:last-child { border-bottom: none; }
+.plus-pts { font-size: 12px; color: var(--green); font-weight: 600; margin-left: auto; }
+
+@media (max-width: 480px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     TELA 0: CONFIGURAÇÃO
+══════════════════════════════════════ -->
+<div id="screen-config">
+  <div class="config-wrap">
+    <div class="config-box fade-in">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;">
+        <div style="width:44px;height:44px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:16px;color:#fff;">SA</div>
+        <div>
+          <h1 style="margin:0;">Configuração inicial</h1>
+          <p style="margin:0;font-size:13px;color:var(--text2);">Sistema Alpha — Suplementos</p>
+        </div>
+      </div>
+
+      <p>Para o app buscar os dados da sua planilha do Google Sheets, siga os passos abaixo:</p>
+
+      <div class="config-steps">
+        <div class="config-step">
+          <div class="step-num">1</div>
+          <div>Abra sua planilha no Google Sheets e clique em <strong>Extensões → Apps Script</strong></div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">2</div>
+          <div>Cole o script fornecido no final desta página e clique em <strong>Implantar → Novo Implantação → App da Web</strong></div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">3</div>
+          <div>Em "Quem tem acesso" escolha <strong>"Qualquer pessoa"</strong> e copie a URL gerada</div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">4</div>
+          <div>Cole a URL abaixo e clique em Salvar</div>
+        </div>
+      </div>
+
+      <label>URL do Google Apps Script (Web App)</label>
+      <input type="url" id="cfg-url" placeholder="https://script.google.com/macros/s/..." />
+      <div class="hint">Cole aqui a URL gerada no passo 3</div>
+
+      <label>Nome da sua loja (aparece no app)</label>
+      <input type="text" id="cfg-nome" placeholder="Ex: Alpha Suplementos" value="Alpha Suplementos" />
+
+      <button class="btn-config" onclick="salvarConfig()">Salvar e continuar</button>
+
+      <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Script para colar no Apps Script:</p>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;font-family:monospace;font-size:11px;color:#9FE1CB;overflow-x:auto;white-space:pre;line-height:1.6;">function doGet(e) {
+  const action = e.parameter.action;
+  const sheet = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName('Página1');
+
+  if (action === 'getAll') {
+    const data = sheet.getDataRange().getValues();
+    const headers = data[0];
+    const rows = data.slice(1).filter(r => r[0] !== '');
+    const result = rows.map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = r[i]);
+      return obj;
+    });
+    return ContentService
+      .createTextOutput(JSON.stringify(result))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  return ContentService
+    .createTextOutput('{"error":"action inválida"}')
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const sheet = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName('Página1');
+
+  if (data.action === 'addCliente') {
+    const c = data.cliente;
+    sheet.appendRow([
+      c.nome, c.whatsapp, c.produto,
+      c.dataCompra, c.valor, c.diasUso,
+      '', '', '', '', '', '', '', '', c.codigo,
+      c.indicadoPor || '', '', ''
+    ]);
+    return ContentService
+      .createTextOutput('{"ok":true}')
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  return ContentService
+    .createTextOutput('{"error":"action inválida"}')
+    .setMimeType(ContentService.MimeType.JSON);
+}</div>
+        <p style="font-size:12px;color:var(--text3);margin-top:8px;">Você pode usar o app em modo demonstração clicando abaixo (sem Google Sheets — dados de exemplo)</p>
+        <button class="btn-config" style="background:none;border:1px solid var(--border2);color:var(--text2);margin-top:8px;" onclick="usarDemo()">Usar modo demonstração</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TELA 1: LOGIN
+══════════════════════════════════════ -->
+<div id="screen-login">
+  <div class="login-wrap">
+    <div class="login-logo">SA</div>
+    <div class="login-title" id="login-loja-nome">Alpha Suplementos</div>
+    <div class="login-sub">Faça login para continuar</div>
+
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchLoginTab('admin', this)">Administrador</button>
+      <button class="login-tab" onclick="switchLoginTab('cliente', this)">Área do Cliente</button>
+    </div>
+
+    <div class="login-box fade-in">
+      <div class="login-err" id="login-err">Nome ou telefone incorretos. Tente novamente.</div>
+      <div class="login-loading" id="login-loading">
+        <span class="spinner"></span> Verificando...
+      </div>
+
+      <!-- ADMIN -->
+      <div id="form-admin">
+        <label>Usuário</label>
+        <input type="text" id="adm-user" placeholder="admin" value="admin" />
+        <label>Senha</label>
+        <input type="password" id="adm-pass" placeholder="••••••" />
+        <div style="font-size:12px;color:var(--text3);margin-top:-10px;margin-bottom:14px;">Senha padrão: 1234 (altere depois)</div>
+        <button class="btn-login" onclick="loginAdmin()">Entrar como administrador</button>
+      </div>
+
+      <!-- CLIENTE -->
+      <div id="form-cliente" style="display:none;">
+        <label>Seu nome completo</label>
+        <input type="text" id="cli-nome" placeholder="Ex: André Luís Pacheco" />
+        <label>Seu WhatsApp (com DDD, só números)</label>
+        <input type="tel" id="cli-fone" placeholder="Ex: 88996165519" />
+        <button class="btn-login" onclick="loginCliente()">Acessar minha área</button>
+      </div>
+    </div>
+
+    <div class="config-link" onclick="mostrarConfig()">Configurar planilha</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TELA 2: ADMIN
+══════════════════════════════════════ -->
+<div id="screen-admin">
+  <div class="admin-layout">
+    <div class="topbar">
+      <div class="topbar-logo">SA</div>
+      <div>
+        <div class="topbar-title" id="admin-loja-nome">Alpha Suplementos</div>
+        <div class="topbar-sub">Painel do administrador</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+
+    <div class="tabs" id="admin-tabs">
+      <button class="tab active" onclick="adminTab('dashboard', this)">Painel</button>
+      <button class="tab" onclick="adminTab('clientes', this)">Clientes</button>
+      <button class="tab" onclick="adminTab('alertas', this)">Avisos</button>
+      <button class="tab" onclick="adminTab('ranking', this)">Ranking</button>
+      <button class="tab" onclick="adminTab('cashback', this)">Cashback</button>
+      <button class="tab" onclick="adminTab('indicacao', this)">Indicação</button>
+      <button class="tab" onclick="adminTab('cadastro', this)">+ Cadastrar</button>
+    </div>
+
+    <div id="admin-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TELA 3: CLIENTE
+══════════════════════════════════════ -->
+<div id="screen-cliente">
+  <div class="cliente-layout">
+    <div class="cliente-header">
+      <div class="cliente-avatar" id="cli-avatar">--</div>
+      <div>
+        <div class="cliente-name" id="cli-display-nome">--</div>
+        <div class="cliente-code" id="cli-display-code">Código: --</div>
+      </div>
+      <div style="flex:1;"></div>
+      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+    <div id="cliente-content"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// ESTADO GLOBAL
+// ══════════════════════════════════════
+let SCRIPT_URL = '';
+let LOJA_NOME = 'Alpha Suplementos';
+let ADMIN_PASS = '1234';
+let clientes = [];
+let clienteLogado = null;
+let modoDemo = false;
+
+const PONTOS_POR_REAL = 1;
+const CASHBACK_PCT = 0.05;
+const PONTOS_INDICACAO = 50;
+
+// Demo data
+const DEMO_CLIENTES = [
+  { Cliente:'André Luís Pacheco', WhatsApp:'88996165519', Produto:'Whey Infinity', 'Data compra':'2025-03-14', Valor:160, 'Dias uso':30, Código:'ALP001', 'Indicado por':'' },
+  { Cliente:'Fernanda Costa', WhatsApp:'88991234567', Produto:'Creatina', 'Data compra':'2025-03-08', Valor:80, 'Dias uso':60, Código:'FCO002', 'Indicado por':'ALP001' },
+  { Cliente:'Carlos Mendes', WhatsApp:'88997654321', Produto:'Pré-treino', 'Data compra':'2025-03-01', Valor:120, 'Dias uso':30, Código:'CME003', 'Indicado por':'' },
+  { Cliente:'Juliana Rocha', WhatsApp:'88993333444', Produto:'BCAA', 'Data compra':'2025-03-10', Valor:55, 'Dias uso':45, Código:'JRO004', 'Indicado por':'ALP001' },
+  { Cliente:'Rafael Souza', WhatsApp:'88995555666', Produto:'Hipercalórico', 'Data compra':'2025-02-20', Valor:200, 'Dias uso':30, Código:'RSO005', 'Indicado por':'CME003' },
+];
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+function init() {
+  SCRIPT_URL = localStorage.getItem('alpha_url') || '';
+  LOJA_NOME = localStorage.getItem('alpha_nome') || 'Alpha Suplementos';
+  ADMIN_PASS = localStorage.getItem('alpha_pass') || '1234';
+  modoDemo = localStorage.getItem('alpha_demo') === '1';
+
+  document.getElementById('login-loja-nome').textContent = LOJA_NOME;
+  document.getElementById('admin-loja-nome').textContent = LOJA_NOME;
+
+  if (!SCRIPT_URL && !modoDemo) {
+    showScreen('config');
+  } else {
+    showScreen('login');
+  }
+}
+
+function showScreen(s) {
+  ['config','login','admin','cliente'].forEach(x => {
+    document.getElementById('screen-' + x).classList.toggle('active', x === s);
+  });
+}
+
+// ══════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════
+function salvarConfig() {
+  const url = document.getElementById('cfg-url').value.trim();
+  const nome = document.getElementById('cfg-nome').value.trim();
+  if (!url) { alert('Cole a URL do Apps Script.'); return; }
+  SCRIPT_URL = url;
+  LOJA_NOME = nome || 'Alpha Suplementos';
+  modoDemo = false;
+  localStorage.setItem('alpha_url', url);
+  localStorage.setItem('alpha_nome', LOJA_NOME);
+  localStorage.removeItem('alpha_demo');
+  document.getElementById('login-loja-nome').textContent = LOJA_NOME;
+  document.getElementById('admin-loja-nome').textContent = LOJA_NOME;
+  showScreen('login');
+}
+
+function usarDemo() {
+  modoDemo = true;
+  localStorage.setItem('alpha_demo', '1');
+  LOJA_NOME = document.getElementById('cfg-nome').value.trim() || 'Alpha Suplementos';
+  localStorage.setItem('alpha_nome', LOJA_NOME);
+  document.getElementById('login-loja-nome').textContent = LOJA_NOME;
+  document.getElementById('admin-loja-nome').textContent = LOJA_NOME;
+  showScreen('login');
+}
+
+function mostrarConfig() {
+  showScreen('config');
+}
+
+// ══════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════
+function switchLoginTab(tipo, btn) {
+  document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('form-admin').style.display = tipo === 'admin' ? 'block' : 'none';
+  document.getElementById('form-cliente').style.display = tipo === 'cliente' ? 'block' : 'none';
+  document.getElementById('login-err').style.display = 'none';
+}
+
+function loginAdmin() {
+  const user = document.getElementById('adm-user').value.trim();
+  const pass = document.getElementById('adm-pass').value;
+  if (user === 'admin' && pass === ADMIN_PASS) {
+    carregarClientes(() => {
+      showScreen('admin');
+      adminTab('dashboard', document.querySelector('#admin-tabs .tab'));
+    });
+  } else {
+    document.getElementById('login-err').textContent = 'Usuário ou senha incorretos.';
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+function loginCliente() {
+  const nome = document.getElementById('cli-nome').value.trim().toLowerCase();
+  const fone = document.getElementById('cli-fone').value.trim().replace(/\D/g,'');
+  if (!nome || !fone) {
+    document.getElementById('login-err').textContent = 'Preencha nome e telefone.';
+    document.getElementById('login-err').style.display = 'block';
+    return;
+  }
+  setLoading(true);
+  carregarClientes(() => {
+    setLoading(false);
+    const found = clientes.find(c =>
+      c.nome.toLowerCase().trim() === nome &&
+      c.whatsapp.replace(/\D/g,'') === fone
+    );
+    if (found) {
+      clienteLogado = found;
+      document.getElementById('cli-avatar').textContent = initials(found.nome);
+      document.getElementById('cli-display-nome').textContent = found.nome;
+      document.getElementById('cli-display-code').textContent = 'Código: ' + found.codigo;
+      showScreen('cliente');
+      renderClienteArea();
+    } else {
+      document.getElementById('login-err').textContent = 'Nome ou telefone não encontrado. Fale com a loja.';
+      document.getElementById('login-err').style.display = 'block';
+    }
+  });
+}
+
+function setLoading(on) {
+  document.getElementById('login-loading').style.display = on ? 'block' : 'none';
+  document.getElementById('login-err').style.display = 'none';
+}
+
+function logout() {
+  clienteLogado = null;
+  document.getElementById('login-err').style.display = 'none';
+  document.getElementById('cli-nome').value = '';
+  document.getElementById('cli-fone').value = '';
+  document.getElementById('adm-pass').value = '';
+  showScreen('login');
+}
+
+// ══════════════════════════════════════
+// DADOS
+// ══════════════════════════════════════
+function carregarClientes(cb) {
+  if (modoDemo || !SCRIPT_URL) {
+    clientes = DEMO_CLIENTES.map(normalizar);
+    cb();
+    return;
+  }
+  fetch(SCRIPT_URL + '?action=getAll')
+    .then(r => r.json())
+    .then(data => {
+      clientes = data.map(normalizar);
+      cb();
+    })
+    .catch(() => {
+      // fallback demo em caso de erro de rede
+      clientes = DEMO_CLIENTES.map(normalizar);
+      cb();
+    });
+}
+
+function normalizar(row) {
+  const nome = String(row['Cliente'] || row.nome || '').trim();
+  const whatsapp = String(row['WhatsApp'] || row.whatsapp || '').replace(/\D/g,'');
+  const produto = String(row['Produto'] || row.produto || '');
+  const dataCompra = String(row['Data compra'] || row.dataCompra || '');
+  const valor = parseFloat(row['Valor'] || row.valor || 0);
+  const diasUso = parseInt(row['Dias uso'] || row.diasUso || 30);
+  const codigo = String(row['Código'] || row['Código indicação'] || row.codigo || gerarCodigo(nome));
+  const indicadoPor = String(row['Indicado por'] || row.indicadoPor || '');
+  return { nome, whatsapp, produto, dataCompra, valor, diasUso, codigo, indicadoPor };
+}
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
+function initials(nome) {
+  return (nome||'').split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);
+}
+function gerarCodigo(nome) {
+  return (nome||'').split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,3) + Math.floor(Math.random()*900+100);
+}
+function calcDataFim(dataCompra, diasUso) {
+  const d = new Date(dataCompra);
+  if (isNaN(d)) return new Date();
+  d.setDate(d.getDate() + diasUso);
+  return d;
+}
+function calcDias(dataCompra, diasUso) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const fim = calcDataFim(dataCompra, diasUso); fim.setHours(0,0,0,0);
+  return Math.ceil((fim - hoje) / 86400000);
+}
+function fmtData(iso) {
+  if (!iso) return '-';
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('pt-BR');
+}
+function calcPontos(c) {
+  const base = Math.floor((c.valor||0) * PONTOS_POR_REAL);
+  const bonus = clientes.filter(x => x.indicadoPor === c.codigo).length * PONTOS_INDICACAO;
+  return base + bonus;
+}
+function calcCashback(c) { return ((c.valor||0) * CASHBACK_PCT).toFixed(2); }
+function statusBadge(dr) {
+  if (dr < 0) return ['badge-red','Vencido'];
+  if (dr <= 7) return ['badge-amber', dr + 'd restantes'];
+  return ['badge-green', dr + 'd restantes'];
+}
+function rankClass(i) { return i===0?'gold':i===1?'silver':i===2?'bronze':''; }
+
+// ══════════════════════════════════════
+// ADMIN — ABAS
+// ══════════════════════════════════════
+function adminTab(tab, btn) {
+  document.querySelectorAll('#admin-tabs .tab').forEach(t=>t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const c = document.getElementById('admin-content');
+  c.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'fade-in';
+  c.appendChild(div);
+  ({
+    dashboard: renderDashboard,
+    clientes: renderListaClientes,
+    alertas: renderAlertas,
+    ranking: renderRanking,
+    cashback: renderCashback,
+    indicacao: renderIndicacao,
+    cadastro: renderCadastro,
+  })[tab](div);
+}
+
+function renderDashboard(el) {
+  const total = clientes.length;
+  const alertas = clientes.filter(c=>{ const d=calcDias(c.dataCompra,c.diasUso); return d>=0&&d<=7; }).length;
+  const vencidos = clientes.filter(c=>calcDias(c.dataCompra,c.diasUso)<0).length;
+  const totalCb = clientes.reduce((s,c)=>s+parseFloat(calcCashback(c)),0).toFixed(2);
+  el.innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Clientes</div><div class="stat-val">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">Avisos (7d)</div><div class="stat-val a">${alertas}</div></div>
+      <div class="stat-card"><div class="stat-label">Vencidos</div><div class="stat-val r">${vencidos}</div></div>
+      <div class="stat-card"><div class="stat-label">Cashback total</div><div class="stat-val g">R$${totalCb}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Clientes recentes</div>
+      <div class="client-list">${clientes.slice(-5).reverse().map(clienteRowHTML).join('') || '<div class="empty">Nenhum cliente.</div>'}</div>
+    </div>`;
+}
+
+function clienteRowHTML(c) {
+  const dr = calcDias(c.dataCompra, c.diasUso);
+  const [bc,bt] = statusBadge(dr);
+  const pts = calcPontos(c);
+  return `<div class="client-row">
+    <div class="avatar">${initials(c.nome)}</div>
+    <div class="client-info">
+      <div class="client-name">${c.nome}</div>
+      <div class="client-sub">${c.produto} · ${pts} pts · R$${calcCashback(c)} cashback</div>
+    </div>
+    <span class="badge ${bc}">${bt}</span>
+    <button class="icon-btn" title="WhatsApp" onclick="abrirWhats('${c.whatsapp}','${c.nome}','${c.produto}',${dr})">W</button>
+  </div>`;
+}
+
+function renderListaClientes(el) {
+  el.innerHTML = `
+    <div class="search-wrap"><input type="text" placeholder="Buscar pelo nome..." oninput="filtrarClientes(this.value,'cli-list')" /></div>
+    <div class="client-list" id="cli-list">${clientes.map(clienteRowHTML).join('') || '<div class="empty">Nenhum cliente.</div>'}</div>`;
+}
+
+function filtrarClientes(q, elId) {
+  const lista = clientes.filter(c=>c.nome.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById(elId).innerHTML = lista.map(clienteRowHTML).join('') || '<div class="empty">Nenhum resultado.</div>';
+}
+
+function renderAlertas(el) {
+  const venc = clientes.filter(c=>calcDias(c.dataCompra,c.diasUso)<0);
+  const urg = clientes.filter(c=>{ const d=calcDias(c.dataCompra,c.diasUso); return d>=0&&d<=7; }).sort((a,b)=>calcDias(a.dataCompra,a.diasUso)-calcDias(b.dataCompra,b.diasUso));
+  let html = '';
+  if (!venc.length && !urg.length) { el.innerHTML='<div class="empty">Nenhum aviso no momento!</div>'; return; }
+  if (venc.length) {
+    html += `<div style="font-size:13px;font-weight:500;color:#F09595;margin-bottom:8px;">Produtos vencidos</div>`;
+    html += venc.map(c=>`<div class="alert-item danger">
+      <div class="alert-text"><div class="alert-name">${c.nome}</div><div class="alert-desc">${c.produto} — venceu em ${fmtData(calcDataFim(c.dataCompra,c.diasUso).toISOString().slice(0,10))}</div></div>
+      <button class="btn-whats" onclick="abrirWhats('${c.whatsapp}','${c.nome}','${c.produto}',${calcDias(c.dataCompra,c.diasUso)})">Avisar</button>
+    </div>`).join('');
+  }
+  if (urg.length) {
+    html += `<div style="font-size:13px;font-weight:500;color:#EF9F27;margin:${venc.length?'1rem 0':'0'} 0 8px;">Acabando em breve</div>`;
+    html += urg.map(c=>{ const dr=calcDias(c.dataCompra,c.diasUso);
+      return `<div class="alert-item warn">
+        <div class="alert-text"><div class="alert-name">${c.nome}</div><div class="alert-desc">${c.produto} — termina em ${dr} dia${dr!==1?'s':''}</div></div>
+        <button class="btn-whats" onclick="abrirWhats('${c.whatsapp}','${c.nome}','${c.produto}',${dr})">Avisar</button>
+      </div>`;
+    }).join('');
+  }
+  el.innerHTML = html;
+}
+
+function renderRanking(el) {
+  const sorted = [...clientes].sort((a,b)=>calcPontos(b)-calcPontos(a));
+  const maxP = sorted.length ? calcPontos(sorted[0]) : 1;
+  el.innerHTML = `<div class="card"><div class="card-title">Ranking de pontos</div>${
+    sorted.map((c,i)=>{
+      const pts=calcPontos(c); const pct=Math.round(pts/maxP*100);
+      return `<div class="ranking-item">
+        <div class="rank-num ${rankClass(i)}">${i+1}</div>
+        <div class="avatar sm">${initials(c.nome)}</div>
+        <div class="rank-info">
+          <div class="rank-name">${c.nome}</div>
+          <div class="rank-prod">${c.produto}</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div><div class="rank-pts">${pts} pts</div><div class="rank-cash">R$${calcCashback(c)}</div></div>
+      </div>`;
+    }).join('') || '<div class="empty">Nenhum cliente.</div>'
+  }</div>`;
+}
+
+function renderCashback(el) {
+  const sorted = [...clientes].sort((a,b)=>b.valor-a.valor);
+  const maxV = sorted.length ? sorted[0].valor : 1;
+  el.innerHTML = `<div class="card"><div class="card-title">Cashback acumulado</div>${
+    sorted.map(c=>{
+      const cb=calcCashback(c); const pct=Math.round(c.valor/maxV*100);
+      return `<div class="cb-row">
+        <div class="cb-top"><span class="cb-name">${c.nome}</span><span class="cb-val">R$${cb}</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="cb-sub">${c.produto} · Compra: R$${c.valor.toFixed(2)}</div>
+      </div>`;
+    }).join('') || '<div class="empty">Nenhum cliente.</div>'
+  }</div>`;
+}
+
+function renderIndicacao(el) {
+  const pares = clientes.filter(c=>c.indicadoPor).map(c=>{
+    const ind = clientes.find(x=>x.codigo===c.indicadoPor);
+    return { indicador: ind ? ind.nome : c.indicadoPor, indicado: c.nome };
+  });
+  const porIndic = {};
+  pares.forEach(p=>{ porIndic[p.indicador]=(porIndic[p.indicador]||0)+1; });
+
+  let html = `<div class="card"><div class="card-title">Rede de indicações</div>`;
+  if (pares.length) {
+    html += pares.map(p=>`<div class="indic-pair">
+      <div class="avatar sm">${initials(p.indicador)}</div>
+      <span style="font-size:13px;font-weight:500;">${p.indicador}</span>
+      <span class="arrow">→ indicou →</span>
+      <div class="avatar sm">${initials(p.indicado)}</div>
+      <span style="font-size:13px;">${p.indicado}</span>
+      <span class="badge badge-green" style="margin-left:auto;">+${PONTOS_INDICACAO} pts</span>
+    </div>`).join('');
+  } else html += '<div class="empty">Nenhuma indicação ainda.</div>';
+  html += '</div>';
+
+  if (Object.keys(porIndic).length) {
+    html += `<div class="card"><div class="card-title">Bônus por indicação</div>`;
+    html += Object.entries(porIndic).map(([nome,qtd])=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:14px;">${nome}</span>
+        <span style="font-size:12px;color:var(--text2);">${qtd} indicado${qtd>1?'s':''}</span>
+        <span style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--green);">+${qtd*PONTOS_INDICACAO} pts</span>
+      </div>`).join('');
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderCadastro(el) {
+  const opts = clientes.map(c=>`<option value="${c.codigo}">${c.nome} (${c.codigo})</option>`).join('');
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-title">Cadastrar novo cliente</div>
+      <div class="success-toast" id="toast">Cliente cadastrado com sucesso!</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Nome completo</label><input type="text" id="f-nome" placeholder="Ex: João Silva" /></div>
+        <div class="form-group"><label>WhatsApp (só números, com DDD)</label><input type="tel" id="f-whats" placeholder="88999999999" /></div>
+        <div class="form-group"><label>Produto</label>
+          <select id="f-prod">
+            <option value="">Selecione...</option>
+            <option>Whey Infinity</option><option>Creatina</option><option>Pré-treino</option>
+            <option>BCAA</option><option>Hipercalórico</option><option>Colágeno</option>
+            <option>Multivitamínico</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Data da compra</label><input type="date" id="f-data" /></div>
+        <div class="form-group"><label>Valor (R$)</label><input type="number" id="f-valor" placeholder="160.00" step="0.01" /></div>
+        <div class="form-group"><label>Dias de uso</label><input type="number" id="f-dias" placeholder="30" /></div>
+        <div class="form-group"><label>Indicado por (opcional)</label>
+          <select id="f-indic"><option value="">Nenhum</option>${opts}</select>
+        </div>
+        <div class="form-group"><label>Código gerado</label><input type="text" id="f-cod" readonly style="color:var(--text3);" /></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="limparCad()">Limpar</button>
+        <button class="btn-primary" onclick="salvarCliente()">Salvar cliente</button>
+      </div>
+    </div>`;
+  document.getElementById('f-data').value = new Date().toISOString().slice(0,10);
+  document.getElementById('f-nome').addEventListener('input', e=>{
+    document.getElementById('f-cod').value = gerarCodigo(e.target.value);
+  });
+}
+
+function limparCad() {
+  ['f-nome','f-whats','f-valor','f-dias'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-prod').value='';
+  document.getElementById('f-indic').value='';
+  document.getElementById('f-data').value=new Date().toISOString().slice(0,10);
+  document.getElementById('f-cod').value='';
+}
+
+function salvarCliente() {
+  const nome=document.getElementById('f-nome').value.trim();
+  const whats=document.getElementById('f-whats').value.trim().replace(/\D/g,'');
+  const prod=document.getElementById('f-prod').value;
+  const data=document.getElementById('f-data').value;
+  const valor=parseFloat(document.getElementById('f-valor').value);
+  const dias=parseInt(document.getElementById('f-dias').value);
+  const indicCod=document.getElementById('f-indic').value;
+
+  if (!nome||!whats||!prod||!data||isNaN(valor)||isNaN(dias)) {
+    alert('Preencha todos os campos obrigatórios.'); return;
+  }
+  const cod = document.getElementById('f-cod').value || gerarCodigo(nome);
+  const novo = { nome, whatsapp:whats, produto:prod, dataCompra:data, valor, diasUso:dias, codigo:cod, indicadoPor:indicCod };
+  clientes.push(novo);
+
+  if (!modoDemo && SCRIPT_URL) {
+    fetch(SCRIPT_URL, {
+      method:'POST',
+      body: JSON.stringify({ action:'addCliente', cliente:{...novo, indicadoPor: indicCod} })
+    }).catch(()=>{});
+  }
+
+  const t=document.getElementById('toast');
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
+  limparCad();
+}
+
+// ══════════════════════════════════════
+// ÁREA DO CLIENTE
+// ══════════════════════════════════════
+function renderClienteArea() {
+  const c = clienteLogado;
+  const el = document.getElementById('cliente-content');
+  el.innerHTML = '';
+
+  const dr = calcDias(c.dataCompra, c.diasUso);
+  const pts = calcPontos(c);
+  const cb = calcCashback(c);
+
+  const sorted = [...clientes].sort((a,b)=>calcPontos(b)-calcPontos(a));
+  const pos = sorted.findIndex(x=>x.codigo===c.codigo) + 1;
+  const medal = pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':'#'+pos;
+
+  const pct = Math.min(100, Math.max(0, Math.round((c.diasUso - dr) / c.diasUso * 100)));
+  const fillClass = dr < 0 ? 'crit' : dr <= 7 ? 'warn' : 'ok';
+  const drText = dr < 0 ? 'Vencido' : dr + ' dias restantes';
+
+  const indicados = clientes.filter(x=>x.indicadoPor===c.codigo);
+
+  el.innerHTML = `
+    <div class="pts-hero">
+      <div class="pts-label">seus pontos</div>
+      <div class="pts-number">${pts}</div>
+      <div class="pts-sub">Cashback disponível: <strong>R$${cb}</strong></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">Cashback</div>
+        <div class="value green">R$${cb}</div>
+        <div class="detail">5% da compra</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Ranking</div>
+        <div class="value ${pos<=3?'green':''}">${medal}</div>
+        <div class="detail">entre ${clientes.length} clientes</div>
+      </div>
+    </div>
+
+    <div class="produto-card">
+      <div class="produto-header">
+        <div>
+          <div class="produto-name">${c.produto}</div>
+          <div class="produto-data">Comprado em ${fmtData(c.dataCompra)}</div>
+        </div>
+        <span class="badge ${dr<0?'badge-red':dr<=7?'badge-amber':'badge-green'}">${drText}</span>
+      </div>
+      <div class="days-bar"><div class="days-fill ${fillClass}" style="width:${pct}%"></div></div>
+      <div class="days-info">
+        <span>${c.diasUso - Math.max(0,dr)} dias usados</span>
+        <span>${Math.max(0,dr)} dias restantes</span>
+      </div>
+    </div>
+
+    <div class="indic-codigo">
+      <div class="label">Seu código de indicação</div>
+      <div class="code">${c.codigo}</div>
+      <div class="hint">Compartilhe com amigos e ganhe ${PONTOS_INDICACAO} pontos por cada indicação!</div>
+    </div>
+
+    ${indicados.length ? `
+    <div class="card">
+      <div class="card-title">Suas indicações (${indicados.length})</div>
+      ${indicados.map(x=>`<div class="indic-list-item">
+        <div class="avatar sm">${initials(x.nome)}</div>
+        <span style="font-size:14px;">${x.nome}</span>
+        <span class="plus-pts">+${PONTOS_INDICACAO} pts</span>
+      </div>`).join('')}
+    </div>` : ''}
+
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button class="btn-whats" onclick="abrirWhatsCliente()" style="padding:12px 32px;font-size:15px;">
+        Falar com a loja no WhatsApp
+      </button>
+    </div>
+  `;
+}
+
+function abrirWhatsCliente() {
+  window.open('https://wa.me/', '_blank');
+}
+
+// ══════════════════════════════════════
+// WHATSAPP
+// ══════════════════════════════════════
+function abrirWhats(fone, nome, produto, dr) {
+  const primeiro = nome.split(' ')[0];
+  const msg = dr < 0
+    ? `Olá ${primeiro}! Seu ${produto} acabou. Que tal renovar? Temos ótimas opções esperando por você! 💪`
+    : `Olá ${primeiro}! Seu ${produto} está acabando em ${dr} dia${dr!==1?'s':''}. Não deixe faltar, garanta já o próximo! 💪`;
+  window.open(`https://wa.me/55${fone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ══════════════════════════════════════
+// START
+// ══════════════════════════════════════
+init();
+</script>
+</body>
+</html>
